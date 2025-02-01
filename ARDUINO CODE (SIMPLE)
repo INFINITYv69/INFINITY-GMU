@@ -1,0 +1,29 @@
+#include <NewPing.h>
+
+#define TRIG_PIN 9
+#define ECHO_PIN 10
+#define BUZZER_PIN 11
+#define MAX_DISTANCE 200 // Maximum distance to check for obstacles (in cm)
+
+NewPing sonar(TRIG_PIN, ECHO_PIN, MAX_DISTANCE);
+
+void setup() {
+  Serial.begin(9600); // Start the serial communication
+  pinMode(BUZZER_PIN, OUTPUT); // Set the buzzer pin as output
+}
+
+void loop() {
+  delay(50); // Small delay to avoid excessive readings
+  int distance = sonar.ping_cm(); // Get the distance in cm
+
+  if (distance > 0 && distance < 30) { // If an obstacle is within 30 cm
+    digitalWrite(BUZZER_PIN, HIGH); // Sound the buzzer
+  } else {
+    digitalWrite(BUZZER_PIN, LOW); // Turn off the buzzer
+  }
+
+  // Print the distance to the Serial Monitor for debugging
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+}
